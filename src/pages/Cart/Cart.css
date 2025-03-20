@@ -90,6 +90,10 @@
   border-radius: 4px;
 }
 @media (max-width: 750px) {
+  .cart-items-title {
+    font-size: small;
+    grid-template-columns: 1fr 1.5fr 1fr 1.5fr 1fr 0.5fr;
+  }
   .cart-bottom {
     flex-direction: column-reverse;
   }
