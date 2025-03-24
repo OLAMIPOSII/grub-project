@@ -3,9 +3,65 @@ import "./LoginPopup.css";
 import { assets } from "../../assets/assets";
 const LoginPopup = ({ setShowLogin }) => {
   const [currstate, setcurrstate] = useState("Login");
+  // State to handle form inputs
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState(""); // Only for "Sign Up"
+
+  // State for error messages
+  const [error, setError] = useState("");
+
+  // Validation function for email
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Validation function for password
+  const validatePassword = (password) => {
+    return password.length >= 6; // Example check for password length
+  };
+
+  // Handle form submit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("submitted");
+
+    // Reset error state
+    setError("");
+
+    if (!email || !password) {
+      setError("Email and password are required.");
+      return;
+    }
+
+    if (currstate === "sign up" && !name) {
+      setError("Name is required for sign up.");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email.");
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      setError("Password must be at least 6 characters long.");
+      return;
+    }
+
+    // Proceed with form submission (e.g., API call)
+    console.log("Form submitted successfully", { name, email, password });
+
+    // Clear fields (optional)
+    setEmail("");
+    setPassword("");
+    if (currstate === "sign up") setName("");
+  };
+
   return (
     <div className="login-popup">
-      <form className="login-popup-container">
+      <form className="login-popup-container" onSubmit={handleSubmit}>
         <div className="login-popup-title">
           <h2>{currstate}</h2>
           <img
@@ -18,13 +74,31 @@ const LoginPopup = ({ setShowLogin }) => {
           {currstate === "Login" ? (
             <></>
           ) : (
-            <input type="text" placeholder="your name" required />
+            <input
+              type="text"
+              placeholder="your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           )}
 
-          <input type="email" placeholder="your email" required />
-          <input type="password" placeholder="youre password" required />
+          <input
+            type="email"
+            placeholder="your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
-        <button>{currstate === "sign up" ? "Create account" : "Login"}</button>
+        {error && <div className="error-message">{error}</div>}
+        <button type="submit">
+          {currstate === "sign up" ? "Create account" : "Login"}
+        </button>
         <div className="login-popup-condition">
           <input type="checkbox" required />
           <p>By continuing, i agree to the terms of use and Privacy Policy.</p>
