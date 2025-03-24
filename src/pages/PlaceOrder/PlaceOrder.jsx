@@ -5,7 +5,6 @@ const PlaceOrder = () => {
   const { getTotalCartAmount } = useContext(StoreContext);
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  const [input, setInput] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [street, setStreet] = useState("");
@@ -15,22 +14,20 @@ const PlaceOrder = () => {
   const [country, setCountry] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  // Validation function for email
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-  // Validation function for phone number
+
   const validatePhoneNumber = (phone) => {
-    const phoneRegex = /^[2-9]{1}[0-9]{2}-[0-9]{3}-[0-9]{4}$/; // Validate phone in format 123-456-7890
+    const phoneRegex = /^[2-9]{1}[0-9]{2}-[0-9]{3}-[0-9]{4}$/;
     return phoneRegex.test(phone);
   };
-  // Handle form submit
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("submitted");
 
-    // Reset error state
     setError("");
     if (!email) {
       setError("Email information is required for checkout.");
@@ -73,15 +70,23 @@ const PlaceOrder = () => {
       setError("Please enter a valid email.");
       return;
     }
-    // Validate phone number format
+
     if (!validatePhoneNumber(phoneNumber)) {
       setError("Please enter a valid phone number (XXX-XXX-XXXX).");
       return;
     }
-    // Proceed with form submission (e.g., API call)
-    console.log("Form submitted successfully", { input, email });
+    console.log("Form submitted successfully", {
+      firstName,
+      lastName,
+      email,
+      street,
+      city,
+      state,
+      zipcode,
+      country,
+      phoneNumber,
+    });
 
-    // Clear fields (optional)
     setEmail("");
     setPhoneNumber("");
     setFirstName("");
